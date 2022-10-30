@@ -11,8 +11,25 @@ const PORT = process.env.PORT || 3000;
 export const JTW_SECRET = process.env.JTW_SECRET ;
 
 const app = express();
-app.use(cors());
-app.use(morgan('dev'))
+//Configurar cors
+// const whiteList = [process.env.FRONTEND_URL,"http://localhost:3001"];
+
+// const corsOptions = {
+//   origin: function (origin:any, callback:any) {
+//     console.log(origin);
+//     if (whiteList.includes(origin)) {
+//       //Puede consultar la api
+//       callback(null, true);
+//     } else {
+//       //No esta permitido
+//       callback(new Error("Error de Cors, habla con el administador del sitio para mas informacion"));
+//     }
+//   },
+// };
+
+// app.use(cors(corsOptions));
+// app.use(cors());
+app.use(morgan('combined'))
 app.use(express.json());
 app.use(
   fileupload({

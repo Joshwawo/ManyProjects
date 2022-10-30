@@ -5,7 +5,7 @@ import checkAuth from '../middlewares/checkAuth'
 const router = Router()
 
 
-router.get("/posts",getBlogs)
+router.get("/posts",checkAuth,getBlogs)
 router.get("/posts/:id",checkAuth,getBlog)
 router.post("/posts", checkAuth,postBlogs)
 router.put("/posts/:id",checkAuth,updateBlog)
