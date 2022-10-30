@@ -12,7 +12,7 @@ export const JTW_SECRET = process.env.JTW_SECRET ;
 
 const app = express();
 // Configurar cors
-const whiteList = [process.env.FRONTEND_URL,"http://localhost:3001", 'https://jorgemorales.vercel.app'];
+const whiteList = [process.env.FRONTEND_URL,"http://localhost:3001", `${process.env.OWN_HOST}`];
 
 const corsOptions = {
   origin: function (origin:any, callback:any) {
