@@ -36,16 +36,7 @@ const getPlayerTag = async (
     // res.json({message: 'Hello'})
 
   } catch (error:any) {
-    // console.log(error?.request);
-    // res.send({
-    //   status: {
-    //     message: "Player not found",
-    //     status_code: 404,
-    //   },
-    //   error: {
-    //     error: error,
-    //   },
-    // });
+    console.log(error)
   }
 };
 
