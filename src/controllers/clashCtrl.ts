@@ -18,7 +18,7 @@ const getPlayerTag = async (
   res: Response
 ): Promise<void> => {
   try {
-    console.log({tag: query.userHashTag})
+    // console.log({tag: query.userHashTag})
     const userHashTag = query.userHashTag?.toString().replace("#", "%23");
     // const userHashTag = "#QPYJPJ20".replace("#","%23")
 
