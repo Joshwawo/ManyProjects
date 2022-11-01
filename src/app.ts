@@ -13,7 +13,7 @@ export const JTW_SECRET = process.env.JTW_SECRET ;
 const app = express();
 //TODO: Activar la whitelist del cors
 // Configurar cors
-const whiteList = [process.env.FRONTEND_URL,"http://localhost:3001", `${process.env.OWN_HOST}`];
+const whiteList = [process.env.FRONTEND_URL,"http://localhost:3001", `${process.env.OWN_HOST}`,"http://localhost:5173",process.env.OWN_HOST_GAMES];
 
 const corsOptions = {
   origin: function (origin:any, callback:any) {
@@ -29,7 +29,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// app.use(cors());
+app.use(cors());
 dbConnect();
 app.use(morgan('dev'))
 app.use(express.json());
