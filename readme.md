@@ -1,3 +1,3 @@
 ## Pendientes
-- [ ]  Clash auth
+- [x]  Clash auth
 - [ ]  Riot App auth
