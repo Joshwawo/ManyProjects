@@ -6,8 +6,8 @@ const router = Router()
 
 
 router.get("/cards", checkAuth,getCards)
-router.get("/player", checkAuth,getPlayerTag)
-router.get("/upcomingchests",checkAuth,getUpcomingchest)
+router.get("/player",getPlayerTag)
+router.get("/upcomingchests",getUpcomingchest)
 router.get("/clan",checkAuth,getClan)
 
 

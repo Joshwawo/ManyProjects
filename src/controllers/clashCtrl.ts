@@ -18,23 +18,34 @@ const getPlayerTag = async (
   res: Response
 ): Promise<void> => {
   try {
+    console.log({tag: query.userHashTag})
     const userHashTag = query.userHashTag?.toString().replace("#", "%23");
+    // const userHashTag = "#QPYJPJ20".replace("#","%23")
 
-    console.log(userHashTag);
+    // console.log(userHashTag);
     // const userHashTag = "#UJJR8PUCG".toUpperCase().replace("#", "%23");
     const respuesta = await fetchPlayer(String(userHashTag));
-    res.send(respuesta);
-  } catch (error) {
-    console.log(error);
-    res.send({
-      status: {
-        message: "Player not found",
-        status_code: 404,
-      },
-      error: {
-        error: error,
-      },
-    });
+    // console.log(respuesta)
+    // if(respuesta instanceof Error){
+    //   res.json(Error)
+    if(!respuesta){
+      res.status(404).json({message:"Player not Found"})
+    }
+    // }
+    res.json(respuesta);
+    // res.json({message: 'Hello'})
+
+  } catch (error:any) {
+    // console.log(error?.request);
+    // res.send({
+    //   status: {
+    //     message: "Player not found",
+    //     status_code: 404,
+    //   },
+    //   error: {
+    //     error: error,
+    //   },
+    // });
   }
 };
 

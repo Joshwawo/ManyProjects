@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 export const JTW_SECRET = process.env.JTW_SECRET ;
 
 const app = express();
+//TODO: Activar la whitelist del cors
 // Configurar cors
 const whiteList = [process.env.FRONTEND_URL,"http://localhost:3001", `${process.env.OWN_HOST}`];
 
@@ -29,7 +30,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 // app.use(cors());
-app.use(morgan('combined'))
+dbConnect();
+app.use(morgan('dev'))
 app.use(express.json());
 app.use(
   fileupload({
@@ -40,7 +42,6 @@ app.use(
 
 app.use(router);
 
-dbConnect();
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el http://localhost:${PORT}`);

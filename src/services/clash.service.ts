@@ -27,6 +27,7 @@ const fetchCards = async () => {
 };
 
 const fetchPlayer = async (userHashTag: string): Promise<unknown> => {
+  
   try {
     const url = `https://proxy.royaleapi.dev/v1/players/${userHashTag}`;
 
@@ -38,9 +39,11 @@ const fetchPlayer = async (userHashTag: string): Promise<unknown> => {
     });
 
     return respuesta.data;
-  } catch (error) {
-    console.log(error);
-    return error;
+  } catch (error:any) {
+    const errorReturn = new Error('Player not found')
+
+    // console.log(error);
+    return null
   }
 };
 
