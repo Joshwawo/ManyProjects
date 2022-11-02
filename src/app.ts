@@ -13,22 +13,22 @@ export const JTW_SECRET = process.env.JTW_SECRET ;
 const app = express();
 //TODO: Activar la whitelist del cors
 // Configurar cors
-const whiteList = [process.env.FRONTEND_URL,"http://localhost:3001", `${process.env.OWN_HOST}`,"http://localhost:5173",process.env.OWN_HOST_GAMES];
+// const whiteList = [process.env.FRONTEND_URL,"http://localhost:3001", `${process.env.OWN_HOST}`,"http://localhost:5173",process.env.OWN_HOST_GAMES];
 
-const corsOptions = {
-  origin: function (origin:any, callback:any) {
-    console.log(origin);
-    if (whiteList.includes(origin)) {
-      //Puede consultar la api
-      callback(null, true);
-    } else {
-      //No esta permitido
-      callback(new Error("Error de Cors, habla con el administador del sitio para mas informacion"));
-    }
-  },
-};
+// const corsOptions = {
+//   origin: function (origin:any, callback:any) {
+//     console.log(origin);
+//     if (whiteList.includes(origin)) {
+//       //Puede consultar la api
+//       callback(null, true);
+//     } else {
+//       //No esta permitido
+//       callback(new Error("Error de Cors, habla con el administador del sitio para mas informacion"));
+//     }
+//   },
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 app.use(cors());
 dbConnect();
 app.use(morgan('dev'))
