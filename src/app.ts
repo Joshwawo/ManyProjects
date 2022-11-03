@@ -42,7 +42,6 @@ app.use(
 
 app.use(router);
 
-
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el http://localhost:${PORT}`);
 });
