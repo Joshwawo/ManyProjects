@@ -30,6 +30,7 @@ const app = express();
 
 // app.use(cors(corsOptions));
 app.use(cors());
+// app.set("trust proxy", true);
 dbConnect();
 app.use(morgan('dev'))
 app.use(express.json());

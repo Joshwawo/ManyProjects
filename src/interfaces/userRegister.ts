@@ -5,6 +5,7 @@ export interface UserRegister {
     token: string;
     confirmado: boolean;
     comprobarPassword(password: string): Promise<boolean>;
+    credits: number
   }
   
   export interface userIdTypes {
