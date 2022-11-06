@@ -29,11 +29,13 @@ const app = express();
 // };
 
 // app.use(cors(corsOptions));
+//as
 app.use(cors());
 // app.set("trust proxy", true);
 dbConnect();
 app.use(morgan('dev'))
 app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
 app.use(
   fileupload({
     useTempFiles: true,
