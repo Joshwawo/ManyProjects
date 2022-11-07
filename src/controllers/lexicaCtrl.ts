@@ -65,15 +65,16 @@ const getPrompt = async (req: Request, res: Response) => {
 
       if (nsfwQ === true && gridQ === false) {
         // result = result.filter((item) => item.nsfw === true);
-        result = result.filter((item) => item.grid !== true);
-        result = result.filter((item) => item.nsfw !== false);
+        result = result.filter((item) => item.grid !== true);  
+        // result = result.filter((item) => item.nsfw !== false);q
         
         console.log(`entre en el NSFW true y GRID false ${result.length}`.magenta)
         return result.slice(0, Number(limit));
       }
       if (nsfwQ === false && gridQ === true) {
         result = result.filter((item) => item.nsfw !== true);
-        result = result.filter((item) => item.grid !== false);
+        // result = result.filter((item) => item.grid === true);
+        // result = result.filter((item) => item.grid !== false);
         // result = result.filter((item) => item.grid === true);
         console.log(`entre en el NSFW false y GRID true ${result.length}`.yellow)
         return result.slice(0, Number(limit));
@@ -93,6 +94,8 @@ const getPrompt = async (req: Request, res: Response) => {
         console.log(`entre en el NSFW false y GRID false resultaos ${Number(result.length)}`.red)
         return result.slice(0, Number(limit));
       }
+
+      
 
       //Permitir las imagenes nsfw y los grid si el usuario lo desea
       // if ([gridQ, nsfwQ].includes(true)) {

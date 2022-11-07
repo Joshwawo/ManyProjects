@@ -15,6 +15,7 @@
   "dependencies": {
     "@types/morgan": "^1.9.3",
     "@types/mssql": "^8.1.1",
+    "@types/nodemailer": "^6.4.6",
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.31.0",
@@ -29,6 +30,7 @@
     "morgan": "^1.10.0",
     "mssql": "^9.0.1",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.8.0",
     "openai": "^3.1.0"
   },
   "devDependencies": {
