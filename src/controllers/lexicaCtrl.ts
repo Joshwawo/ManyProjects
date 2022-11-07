@@ -44,16 +44,31 @@ const getPrompt = async (req: Request, res: Response) => {
       //   return result
       // }
 
+      // console.log(`Resulto de la api: ${result.length}`);
+
       if ([grid, nsfw].includes(undefined)) {
         // let error = new Error("grid or nsfw is undefined");
 
         return undefined;
       }
-      if ([gridQ, nsfwQ].includes(true)) {
-        result = result.filter((item) => item.grid === gridQ);
+      // if ([gridQ, nsfwQ].includes(true)) {
+      //   result = result.filter((item) => item.grid !== false);
+      //   console.log('Entre en los dos true')
+      // }
+      // if ([gridQ, nsfwQ].includes(false)) {
+      //   result = result.filter((item) => item.nsfw !== true);
+      //   console.log('Entre en los dos false')
+      // }
+
+      if (nsfwQ === true && gridQ === false) {
+        result = result.filter((item) => item.nsfw === true);
+        result = result.filter((item) => item.grid === false);
+        console.log('entre en el NSFW true y GRID false')
       }
-      if ([gridQ, nsfwQ].includes(false)) {
-        result = result.filter((item) => item.nsfw === nsfwQ);
+      if (nsfwQ === false && gridQ === true) {
+        result = result.filter((item) => item.nsfw === false);
+        result = result.filter((item) => item.grid === true);
+        console.log('entre en el NSFW false y GRID true')
       }
 
       //Permitir las imagenes nsfw y los grid si el usuario lo desea
@@ -84,6 +99,7 @@ const getPrompt = async (req: Request, res: Response) => {
       // }
 
       const finalResult = result.slice(0, Number(limit));
+      // console.log(finalResult.length);
 
       // console.log(finalResult.length + " " + limit);
       // console.log("lleggooooo dos");
@@ -101,7 +117,7 @@ const getPrompt = async (req: Request, res: Response) => {
   //   return res.json({ message: "No results found" });
   // }
 
-  if(resto instanceof Error){
+  if (resto instanceof Error) {
     return res.json({ message: resto.message });
   }
   if (resto === undefined) {
