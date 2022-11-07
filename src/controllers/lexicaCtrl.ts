@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import axios from "axios";
 import { LexicaTypes } from "../interfaces/ai/lexicaTypes";
+import colors from 'colors'
+import color from 'colors';
 
 const getPrompt = async (req: Request, res: Response) => {
   console.log(req.query);
@@ -43,8 +45,9 @@ const getPrompt = async (req: Request, res: Response) => {
       // if([promptQ,width,height,grid,nsfw,guidance].includes(undefined)){
       //   return result
       // }
-
-      // console.log(`Resulto de la api: ${result.length}`);
+      colors.enable();
+      console.log(`Resulto de la api: ${result.length}`.green);
+      // console.log('hello'.green);
 
       if ([grid, nsfw].includes(undefined)) {
         // let error = new Error("grid or nsfw is undefined");
@@ -61,14 +64,34 @@ const getPrompt = async (req: Request, res: Response) => {
       // }
 
       if (nsfwQ === true && gridQ === false) {
-        result = result.filter((item) => item.nsfw === true);
-        result = result.filter((item) => item.grid === false);
-        console.log('entre en el NSFW true y GRID false')
+        // result = result.filter((item) => item.nsfw === true);
+        result = result.filter((item) => item.grid !== true);
+        result = result.filter((item) => item.nsfw !== false);
+        
+        console.log(`entre en el NSFW true y GRID false ${result.length}`.magenta)
+        return result.slice(0, Number(limit));
       }
       if (nsfwQ === false && gridQ === true) {
-        result = result.filter((item) => item.nsfw === false);
-        result = result.filter((item) => item.grid === true);
-        console.log('entre en el NSFW false y GRID true')
+        result = result.filter((item) => item.nsfw !== true);
+        result = result.filter((item) => item.grid !== false);
+        // result = result.filter((item) => item.grid === true);
+        console.log(`entre en el NSFW false y GRID true ${result.length}`.yellow)
+        return result.slice(0, Number(limit));
+      }
+
+      if (nsfwQ === true && gridQ === true) {
+        // result = result.filter((item) => item.nsfw === true);
+        // result = result.filter((item) => item.grid === true);
+        // result = result.filter((item) => item.grid !== false);
+        console.log(`entre en el NSFW true y GRID true resultaos ${result.length}`.cyan)
+
+        return result.slice(0, Number(limit));
+      }
+      if (nsfwQ === false && gridQ === false) {
+        result = result.filter((item) => item.nsfw !== true);
+        result = result.filter((item) => item.grid !== true);
+        console.log(`entre en el NSFW false y GRID false resultaos ${Number(result.length)}`.red)
+        return result.slice(0, Number(limit));
       }
 
       //Permitir las imagenes nsfw y los grid si el usuario lo desea
@@ -99,7 +122,7 @@ const getPrompt = async (req: Request, res: Response) => {
       // }
 
       const finalResult = result.slice(0, Number(limit));
-      // console.log(finalResult.length);
+      console.log(finalResult.length);
 
       // console.log(finalResult.length + " " + limit);
       // console.log("lleggooooo dos");
