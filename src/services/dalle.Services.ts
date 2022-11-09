@@ -4,6 +4,10 @@ import dalleModel from "../models/dalle";
 import { NewUser } from "../models/newUser";
 import { body as trashbody } from "../bin/tash";
 import mongoose, { Model } from "mongoose";
+import colors from "colors";
+import dateFs from "date-fns";
+
+colors.enable();
 
 type bodyGen = {
   prompt: string;
@@ -65,9 +69,7 @@ const newGenerationServices = async (
     // const errors: any = new Error(error.response.data.error.message);
 
     if (error.response.data.error) {
-      const errors: any = new Error(
-        error.response.data.error.message
-      );
+      const errors: any = new Error(error.response.data.error.message);
       return errors;
     }
 
@@ -82,11 +84,46 @@ const newGenerationServices = async (
 // const getImagesServices = async (user: string)
 
 const getImagesServices = async (user: string) => {
+  // const userImages = await dalleModel
+  //   .find()
+  //   .where("creator")
+  //   .equals(user)
+  //   .sort({ created: -1 });
   const userImages = await dalleModel
     .find()
     .where("creator")
     .equals(user)
     .sort({ created: -1 });
+
+  //filtrar registros que fueron creados una hora despues de su creacion
+  const userImagesLog = await dalleModel.find({
+    created: { $gte: new Date(new Date().getTime() - 60 * 60 * 1000) },
+  });
+
+  const date2 = "2022-11-07T19:12:46.692Z";
+
+  // const dataFortmat = (date: any) => {
+  //   const dateToFormat = "2022-11-07T19:12:46.692Z";
+
+  //   const dateF = dateFs.format(new Date(dateToFormat), "yyyy-MM-dd HH:mm:ss");
+  //   console.log(dateF);
+  //   return dateF;
+  // };
+  
+
+  //formatear fecha para que apareza con dias, horas, minutos y segundos
+  // const userImagesLogFormat = userImagesLog.map((item) => {
+  //   const date = new Date(item.created);
+  //   const dateFormated = date.toLocaleString();
+  //   return { ...item.$where, created: dateFormated };
+  // });
+  // console.log(userImagesLogFormat)
+  // const dateFormat = (date: any) => {
+  //   const dateFormated = date.toLocaleString();
+  //   return dateFormated;
+  // }
+
+  // console.log(dateFormat(userImagesLog[0].created));
 
   return userImages;
 };
