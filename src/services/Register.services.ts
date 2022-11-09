@@ -34,7 +34,7 @@ const registerNewUserService = async (body: UserRegister) => {
       token: newUser.token,
     });
     const error = new Error(
-      "User created correctly, check your email to confirm your account."
+      "User created correctly, check your email to confirm your account. if you don't see the email, check your spam folder"
     );
 
     return error;
