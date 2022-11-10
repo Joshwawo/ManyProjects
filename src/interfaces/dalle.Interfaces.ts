@@ -2,10 +2,11 @@
 
 export interface DalleInterfaces {
     created: number;
-    data:    Datum[];
+    data?:    Datum[];
     credits: number;
     creator: any
     prompt:  string;
+    cloudinarySave: string | { url: string; public_id: string; };
 }
 
 export interface Datum {

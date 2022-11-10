@@ -29,8 +29,13 @@ const newUserSchema = new Schema<UserRegister>(
     },
     credits: {
       type: Number,
-      default: 20,
+      default: 10,
     },
+    isAdmin:{
+      type: Boolean,
+      default: false
+      
+    }
   },
   {
     timestamps: true,

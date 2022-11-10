@@ -6,6 +6,7 @@ export interface UserRegister {
     confirmado: boolean;
     comprobarPassword(password: string): Promise<boolean>;
     credits: number
+    isAdmin: boolean
   }
   
   export interface userIdTypes {
