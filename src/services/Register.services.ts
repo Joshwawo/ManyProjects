@@ -65,6 +65,7 @@ const authService = async (body: UserRegister) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      isAdmin: user.isAdmin,
       token: generateJWT(user._id),
     };
     return token;
