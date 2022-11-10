@@ -3,7 +3,7 @@ import { configuration } from "../config/openAiConfig";
 import dalleModel from "../models/dalle";
 import { NewUser } from "../models/newUser";
 import { body as trashbody } from "../bin/tash";
-import mongoose, { Model } from "mongoose";
+import { uploadImage } from "../libs/dalleSavesCloudinary";
 import colors from "colors";
 import dateFs from "date-fns";
 
@@ -38,7 +38,7 @@ const newGenerationServices = async (
   // console.log(prompt);
   if (userGen.credits <= 0) {
     const error = new Error(
-      "No tienes suficientes creditos para generar una nueva imagen"
+      "You do not have enough credits to generate a new image. u need more for free? @joshwawo on twitter"
     );
     return error;
   }
@@ -52,20 +52,28 @@ const newGenerationServices = async (
       response_format: "url",
     });
 
+    // console.log(response.data.data[0].url);
+
     //trashbody
+    let imageResponse =  response.data.data[0].url;
+    const cloudinaryResponse = await uploadImage(imageResponse as string);
+
+    let imageClodinary = {
+      url: cloudinaryResponse.secure_url,
+      public_id: cloudinaryResponse.public_id,
+    };
 
     userGen.credits = userGen.credits - 1;
-
-    //   console.log(userGen);
     const newImgGen = new dalleModel(response.data);
     newImgGen.creator = user._id;
     newImgGen.prompt = prompt;
+    newImgGen.cloudinarySave = imageClodinary;
 
     const imagenGenSaved = await newImgGen.save();
     await userGen.save();
     return imagenGenSaved;
   } catch (error: any) {
-    console.log(error.response.data.error);
+    console.log(error.response.data);
     // const errors: any = new Error(error.response.data.error.message);
 
     if (error.response.data.error) {
@@ -84,23 +92,24 @@ const newGenerationServices = async (
 // const getImagesServices = async (user: string)
 
 const getImagesServices = async (user: string) => {
+  const userImages = await dalleModel
+    .find()
+    .where("creator")
+    .equals(user)
+    .sort({ createdAt: -1 });
+    
   // const userImages = await dalleModel
   //   .find()
   //   .where("creator")
   //   .equals(user)
   //   .sort({ created: -1 });
-  const userImages = await dalleModel
-    .find()
-    .where("creator")
-    .equals(user)
-    .sort({ created: -1 });
 
   //filtrar registros que fueron creados una hora despues de su creacion
-  const userImagesLog = await dalleModel.find({
-    created: { $gte: new Date(new Date().getTime() - 60 * 60 * 1000) },
-  });
+  // const userImagesLog = await dalleModel.find({
+  //   created: { $gte: new Date(new Date().getTime() - 60 * 60 * 1000) },
+  // });
 
-  const date2 = "2022-11-07T19:12:46.692Z";
+  // const date2 = "2022-11-07T19:12:46.692Z";
 
   // const dataFortmat = (date: any) => {
   //   const dateToFormat = "2022-11-07T19:12:46.692Z";
@@ -109,7 +118,6 @@ const getImagesServices = async (user: string) => {
   //   console.log(dateF);
   //   return dateF;
   // };
-  
 
   //formatear fecha para que apareza con dias, horas, minutos y segundos
   // const userImagesLogFormat = userImagesLog.map((item) => {
@@ -139,6 +147,7 @@ const getImagesServices = async (user: string) => {
 //     return null;
 //   }
 // };
+
 const searchUserHelper = async (id: string) => {
   try {
     const search = await NewUser.findById(id);

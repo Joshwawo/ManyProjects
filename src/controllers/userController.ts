@@ -36,7 +36,7 @@ const authUserR = async (req: Request, res: Response) => {
         .status(response.message === "User does not exist" ? 404 : 400)
         .json({ message: response.message });
     }
-    console.log(response);
+    // console.log(response);
 
     res.json(response);
   } catch (error) {

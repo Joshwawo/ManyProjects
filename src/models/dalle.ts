@@ -18,18 +18,22 @@ const DallleSchema = new Schema<DalleInterfaces>(
     prompt:{
       type: String,
       default: 'No available prompt'
-    }
+    },
+    cloudinarySave: {
+      type: Object,
+      
+    },
+    
   },
   {
-    
-    timeseries: {
-      timeField: "timestamp",
-      metaField: "metadata",
-      granularity: "seconds",
-    },
-    expireAfterSeconds: 60,
     timestamps: true,
-    versionKey: false,
+    
+    // timeseries: {
+    //   timeField: "timestamp",
+    //   metaField: "metadata",
+    //   granularity: "seconds",
+    // },
+    
     
     // timestamps: true,
     // versionKey: false,
