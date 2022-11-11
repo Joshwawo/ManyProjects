@@ -15,6 +15,13 @@ export const sendEmailRegistration = async (data: any) => {
       pass: process.env.MAIL_PASSWORD,
     },
   } as TransportOptions);
+  
+  // const mailtrap: any = {
+  //   MAIL_HOST: "smtp.mailtrap.io",
+  //   MAIL_PORT: 2525,
+  //   MAIL_USER: "2feff1d9fe22e1",
+  //   MAIL_PASS: "52cc3976a276cd",
+  // };
 
   // const transport = nodemailer.createTransport({
   //   host: mailtrap.MAIL_HOST,
@@ -515,7 +522,7 @@ export const sendEmailRegistration = async (data: any) => {
                               <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                                 <tr>
                                   <td align="center">
-                                    <a href="${vercelUrl}/confirm/${token}"class="f-fallback button" target="_blank">Confirm Account</a>
+                                    <a href="${vercelUrl}/auth/confirm/${token}"class="f-fallback button" target="_blank">Confirm Account</a>
                                   </td>
                                 </tr>
                               </table>
