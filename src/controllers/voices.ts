@@ -19,7 +19,7 @@ const postVoices = async ({ body }: Request, res: Response) => {
   setTimeout(async () => {
     console.log(response);
     res.json(response);
-  },20000);
+  },30000);
 };
 
 const test = async (req: Request, res: Response) => {
