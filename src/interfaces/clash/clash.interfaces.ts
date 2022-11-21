@@ -171,3 +171,5 @@ export interface CurrentFavouriteCard {
     iconUrls: CardIconUrls;
 }
 
+
+
