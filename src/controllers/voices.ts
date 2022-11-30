@@ -20,19 +20,25 @@ const voiceList = async (req: Request, res: Response) => {
 };
 
 const postVoices = async ({ body }: Request, res: Response) => {
-  const response: any = await resSpeechServices(body);
+  try {
+    const response: any = await resSpeechServices(body);
 
-  // console.log(response);
-
-  setTimeout(async () => {
-    // console.log(response);
-    if (response?.path === null) {
-      const error = new Error("No se pudo generar el audio");
-      return res.status(400).json({ message: error.message });
+    if(response instanceof Error){
+     return res.status(500).json({message: response.message})
     }
 
-    res.json(response);
-  }, 15000);
+    setTimeout(async () => {
+      // console.log(response);
+      if (response?.path === null) {
+        const error = new Error("No se pudo generar el audio");
+        return res.status(400).json({ message: error.message });
+      }
+      res.json(response);
+    }, 15000);
+  } catch (error) {
+    console.log("Llego al catch del controller");
+    console.log(error);
+  }
 };
 
 const test = async (req: Request, res: Response) => {
@@ -46,6 +52,6 @@ const getVoices = async (req: Request, res: Response) => {
   const { language, mode } = req.query;
   const response = await listVoicesServicesHelper(`${language}`, `${mode}`);
   res.json(response);
-}
+};
 
-export { root, postVoices, test, voiceList,getVoices };
+export { root, postVoices, test, voiceList, getVoices };
