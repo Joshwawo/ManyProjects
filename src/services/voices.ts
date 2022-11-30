@@ -58,7 +58,7 @@ const listVoicesServices = async (language: any, mode: string) => {
   try {
     const response = await axios.request(options);
     let result = response.data as ResVoicesTypes[];
-  
+
     return result;
 
     // return filterR;
@@ -102,7 +102,6 @@ const listVoicesServicesHelper = async (language: any, mode: string) => {
 
 const resSpeechServices = async (body: bodyVoices) => {
   const { tts, voice, pace, duration, pitch, voicemodel_uuid } = body;
-  console.log(voicemodel_uuid);
   const postSpeech = async () => {
     const options = {
       method: "POST",
@@ -119,7 +118,7 @@ const resSpeechServices = async (body: bodyVoices) => {
         speech: tts,
         // duration: [100],
         // pitch: [100],
-        // voicemodel_uuid: 'd1bee776-ae8a-496f-bfb7-84b2e63679db',
+        // voicemodel_uuid: voicemodel_uuid,
       },
     };
     try {
@@ -129,7 +128,9 @@ const resSpeechServices = async (body: bodyVoices) => {
         tss: tts,
       };
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+      const newError = new Error("Error with the request to the API");
+      throw newError;
     }
   };
 
@@ -145,32 +146,40 @@ const resSpeechServices = async (body: bodyVoices) => {
 
     return res;
   };
-  const respuestaPost = await postSpeech();
 
-  const uuid = respuestaPost?.res?.uuid;
-  const tss = respuestaPost?.tss;
+  try {
+    const respuestaPost: any = await postSpeech();
 
-  let respuestaGet;
+    const uuid = respuestaPost?.res?.uuid;
+    const tss = respuestaPost?.tss;
 
-  return new Promise((resolve, reject) => {
-    setTimeout(async () => {
-      respuestaGet = await getSpeech(uuid, tss);
-      let datasaved: VoicesGet = {
-        failed_at: respuestaGet.failed_at,
-        finished_at: respuestaGet.finished_at,
-        meta: respuestaGet.meta,
-        path: respuestaGet.path,
-        started_at: respuestaGet.started_at,
-        uuid: uuid,
-        tts: respuestaPost?.tss,
-      };
-      const voices = new voicesModel(datasaved);
-      await voices.save();
-      // const voicesSaved =
+    let respuestaGet;
 
-      resolve(respuestaGet);
-    }, 9000);
-  });
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        respuestaGet = await getSpeech(uuid, tss);
+        let datasaved: VoicesGet = {
+          failed_at: respuestaGet.failed_at,
+          finished_at: respuestaGet.finished_at,
+          meta: respuestaGet.meta,
+          path: respuestaGet.path,
+          started_at: respuestaGet.started_at,
+          uuid: uuid,
+          tts: respuestaPost?.tss,
+        };
+        const voices = new voicesModel(datasaved);
+        await voices.save();
+        // const voicesSaved =
+
+        resolve(respuestaGet);
+      }, 9000);
+    });
+  } catch (error) {
+    console.log(error);
+    const errorResponse = new Error("Error with the request to the API, try again");
+
+    return errorResponse;
+  }
 };
 
 const testo = async () => {
@@ -181,7 +190,12 @@ const testo = async () => {
   });
 };
 
-export { resSpeechServices, testo, listVoicesServices,listVoicesServicesHelper };
+export {
+  resSpeechServices,
+  testo,
+  listVoicesServices,
+  listVoicesServicesHelper,
+};
 
 //   setTimeout(async () => {
 //     //you have better options than this?
