@@ -1,14 +1,52 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import "dotenv/config";
+import morgan from "morgan";
 import fileupload from "express-fileupload";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
+
 import { router } from "./routes";
 import { dbConnect } from "./config/mongo";
-import morgan from 'morgan'
+import path from "path";
+// import {swaggerSpec} from './utils/swaggerConfig'
+
+export const swaggerSpec:swaggerJsDoc.Options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "API DOCUMENTATION",
+      version: "1.0.0",
+      description: "API DOCUMENTATION FOR THE THIS APP",
+    },
+    servers: [
+      {
+        url: "http://localhost:3003",
+      },
+      {
+        url: "https://api-projects.up.railway.app",
+      },
+    ],
+    components:{
+      securitySchemes:{
+        bearerAuth:{
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT"
+        }
+      }
+    },
+    
+
+    
+  },
+  // apis: ["./src/routes/*.ts"],
+  apis: [`${path.join(__dirname, "./routes/*.ts")}`],
+};
 
 const PORT = process.env.PORT || 3000;
 
-export const JTW_SECRET = process.env.JTW_SECRET ;
+export const JTW_SECRET = process.env.JTW_SECRET;
 
 const app = express();
 //TODO: Activar la whitelist del cors
@@ -33,7 +71,7 @@ const app = express();
 app.use(cors());
 // app.set("trust proxy", true);
 dbConnect();
-app.use(morgan('dev'))
+app.use(morgan("dev"));
 app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 app.use(
@@ -44,6 +82,11 @@ app.use(
 );
 
 app.use(router);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerJsDoc(swaggerSpec))
+);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el http://localhost:${PORT}`);

@@ -95,8 +95,10 @@ const listVoicesServicesHelper = async (language: any, mode: string) => {
     return languagesNameAndLang;
 
     // return filterR;
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    // console.log(err);
+    const error = new Error("Error bad request");
+    throw error;
   }
 };
 
@@ -128,7 +130,7 @@ const resSpeechServices = async (body: bodyVoices) => {
         tss: tts,
       };
     } catch (error) {
-      // console.error(error);
+      console.error(error);
       const newError = new Error("Error with the request to the API");
       throw newError;
     }

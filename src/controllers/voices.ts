@@ -23,8 +23,8 @@ const postVoices = async ({ body }: Request, res: Response) => {
   try {
     const response: any = await resSpeechServices(body);
 
-    if(response instanceof Error){
-     return res.status(500).json({message: response.message})
+    if (response instanceof Error) {
+      return res.status(500).json({ message: response.message });
     }
 
     setTimeout(async () => {
@@ -49,9 +49,17 @@ const test = async (req: Request, res: Response) => {
 };
 
 const getVoices = async (req: Request, res: Response) => {
-  const { language, mode } = req.query;
+  try {
+    const { language, mode } = req.query;
   const response = await listVoicesServicesHelper(`${language}`, `${mode}`);
+  console.log("La respuesta", response?.[0]);
+  console.log("El tamaño es de: ", response?.length);
   res.json(response);
+  } catch (error: any) {
+    console.log('Llego al catch del controller')
+    console.log(error)
+    return res.status(400).json({message: error.message, statusCode: 404})
+  }
 };
 
 export { root, postVoices, test, voiceList, getVoices };
