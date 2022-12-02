@@ -40,8 +40,9 @@ export const swaggerSpec:swaggerJsDoc.Options = {
 
     
   },
-  // apis: ["./src/routes/*.ts"],
-  apis: [`${path.join(__dirname, "./routes/*.ts")}`],
+  apis: ["./src/routes/*.ts", "./src/routes/*.js"],
+  // apiss: [`${path.join(__dirname, "./routes/*.ts")}`],
+  // apis: [`${path.join(__dirname, "./routes/*.ts", "./routes/*.js")}`],
 };
 
 const PORT = process.env.PORT || 3000;
