@@ -5,13 +5,21 @@ import morgan from "morgan";
 import fileupload from "express-fileupload";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
+import helmet from 'helmet'
+import compression from 'compression'
 
 import { router } from "./routes";
 import { dbConnect } from "./config/mongo";
-import path from "path";
-// import {swaggerSpec} from './utils/swaggerConfig'
+import swagger_pathJson from "./utils/swaggerJson.json";
 
-export const swaggerSpec:swaggerJsDoc.Options = {
+// const swaggerDocument = YAML.load('./swagger.yaml');
+// const swagger_path = path.resolve(__dirname, "./utils/swagger.yaml");
+// const swaggerDocument = YAML.load(swagger_path);
+// console.log(swagger_path);
+// console.log(swagger_pathJson);
+
+
+export const swaggerSpec: swaggerJsDoc.Options = {
   definition: {
     openapi: "3.0.0",
     info: {
@@ -27,18 +35,15 @@ export const swaggerSpec:swaggerJsDoc.Options = {
         url: "https://api-projects.up.railway.app",
       },
     ],
-    components:{
-      securitySchemes:{
-        bearerAuth:{
+    components: {
+      securitySchemes: {
+        bearerAuth: {
           type: "http",
           scheme: "bearer",
-          bearerFormat: "JWT"
-        }
-      }
+          bearerFormat: "JWT",
+        },
+      },
     },
-    
-
-    
   },
   apis: ["./src/routes/*.ts", "./src/routes/*.js"],
   // apiss: [`${path.join(__dirname, "./routes/*.ts")}`],
@@ -50,6 +55,7 @@ const PORT = process.env.PORT || 3000;
 export const JTW_SECRET = process.env.JTW_SECRET;
 
 const app = express();
+
 //TODO: Activar la whitelist del cors
 // Configurar cors
 // const whiteList = [process.env.FRONTEND_URL,"http://localhost:3001", `${process.env.OWN_HOST}`,"http://localhost:5173",process.env.OWN_HOST_GAMES];
@@ -70,8 +76,10 @@ const app = express();
 // app.use(cors(corsOptions));
 //as
 app.use(cors());
+app.use(compression())
 // app.set("trust proxy", true);
 dbConnect();
+app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
@@ -81,13 +89,14 @@ app.use(
     tempFileDir: "./upload",
   })
 );
-
 app.use(router);
 app.use(
   "/api-docs",
   swaggerUi.serve,
   swaggerUi.setup(swaggerJsDoc(swaggerSpec))
 );
+// app.use("/api-yaml", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-json", swaggerUi.serve, swaggerUi.setup(swagger_pathJson));
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el http://localhost:${PORT}`);

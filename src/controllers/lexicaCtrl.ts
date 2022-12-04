@@ -162,6 +162,10 @@ const getPrompt = async (req: Request, res: Response) => {
 const postPrompt = async ({ files }: Request, res: Response) => {
   const response = await searchImgUplodedServices(files);
 
+  if (response instanceof Error) {
+    return res.status(400).json({ message: response.message, statusCode: 400 });
+  }
+
   res.json(response);
 };
 

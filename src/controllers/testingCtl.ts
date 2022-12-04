@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import BlogModel from "../models/blog.model";
-import { poolConexion } from "../config/sqlServer";
-import { dateFetch } from "../services/testing.services";
+// import { poolConexion } from "../config/sqlServer";
+// import { dateFetch } from "../services/testing.services";
 
 const testingParams = async (req: Request, res: Response) => {
   try {
@@ -145,29 +145,30 @@ const queryByNameAndDate = async (req: Request, res: Response) => {
 };
 
 const sqlTest = async (req: Request, res: Response) => {
-  try {
-    // console.log(req)
-    const { start, end } = req.query;
+  res.json({ message: "maintenance" });
+  // try {
+  //   // console.log(req)
+  //   const { start, end } = req.query;
 
-    const resultado = await dateFetch(start as string, end as string);
+  //   // const resultado = await dateFetch(start as string, end as string);
 
-    if (resultado?.length === 0) {
-      res.status(404).send("Not Found");
-    } else {
-      res.send(resultado);
-    }
-    // const pool = await poolConexion();
-    // // const result = await pool?.request().query("select * from dbo.timestampDemo");
-    // const result = await pool?.request().query(`SELECT * FROM timestampDemo WHERE created_at BETWEEN '${start}' AND '${end}'`);
+  //   if (resultado?.length === 0) {
+  //     res.status(404).send("Not Found");
+  //   } else {
+  //     res.send(resultado);
+  //   }
+  //   // const pool = await poolConexion();
+  //   // // const result = await pool?.request().query("select * from dbo.timestampDemo");
+  //   // const result = await pool?.request().query(`SELECT * FROM timestampDemo WHERE created_at BETWEEN '${start}' AND '${end}'`);
 
-    // if(result?.recordset.length === 0){
-    //     res.status(404).send("No hay datos")
-    // }else{
-    //     res.send(result?.recordset)
-    // }
-  } catch (error) {
-    res.send(error);
-  }
+  //   // if(result?.recordset.length === 0){
+  //   //     res.status(404).send("No hay datos")
+  //   // }else{
+  //   //     res.send(result?.recordset)
+  //   // }
+  // } catch (error) {
+  //   res.send(error);
+  // }
 };
 
 export {
