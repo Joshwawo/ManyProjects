@@ -5,19 +5,20 @@ import morgan from "morgan";
 import fileupload from "express-fileupload";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
-import helmet from 'helmet'
-import compression from 'compression'
+import helmet from "helmet";
+import compression from "compression";
+import axios, { AxiosResponse } from "axios";
 
 import { router } from "./routes";
 import { dbConnect } from "./config/mongo";
 import swagger_pathJson from "./utils/swaggerJson.json";
+import { convertMsToMIn } from "./helpers/convertMsToMins";
 
 // const swaggerDocument = YAML.load('./swagger.yaml');
 // const swagger_path = path.resolve(__dirname, "./utils/swagger.yaml");
 // const swaggerDocument = YAML.load(swagger_path);
 // console.log(swagger_path);
 // console.log(swagger_pathJson);
-
 
 export const swaggerSpec: swaggerJsDoc.Options = {
   definition: {
@@ -76,7 +77,7 @@ const app = express();
 // app.use(cors(corsOptions));
 //as
 app.use(cors());
-app.use(compression())
+app.use(compression());
 // app.set("trust proxy", true);
 dbConnect();
 app.use(helmet());
@@ -97,6 +98,25 @@ app.use(
 );
 // app.use("/api-yaml", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api-json", swaggerUi.serve, swaggerUi.setup(swagger_pathJson));
+const call = async (): Promise<void> => {
+  try {
+    const url = "http://localhost:3003/scrap/lift";
+    const urlProd = "https://api-projects.up.railway.app/scrap/lift";
+
+    const timer = 900 * 1000;
+    const { data }: AxiosResponse = await axios.get(url);
+    console.log({
+      response: data.message,
+      time: `Han pasado ${convertMsToMIn(timer)} minutos`,
+    });
+    setTimeout(() => call(), timer);
+  } catch (error) {
+    console.log(error);
+    console.log("uno un error en la fn call");
+  }
+};
+
+call();
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el http://localhost:${PORT}`);
