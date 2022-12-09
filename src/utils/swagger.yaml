@@ -1,0 +1,380 @@
+openapi: 3.0.0
+info:
+  title: API Documentation
+  description: Documentation for the API
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: correo@correo.com
+servers:
+  - url: http://localhost:3003
+  - url: https://api-projects.up.railway.app
+
+paths:
+  /images/sus:
+    #? Aqui empieza el post de sus Images
+    post:
+      security:
+        - bearerAuth: []
+      summary: Uploads a sus image
+      tags:
+        - Sus Images
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              $ref: "#/components/schemas/SusImage"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  susImg:
+                    type: string
+                  nsfw:
+                    type: boolean
+                description: random sus image
+        401:
+          description: Unauthorized you need a token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  error:
+                    type: string
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  error:
+                    type: string
+    get:
+      summary: Returns all sus images
+      tags:
+        - Sus Images
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+  #Rutas de sus images
+  /images/sus/random:
+    get:
+      summary: Returns a random sus image
+      tags:
+        - Sus Images
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  susImg:
+                    type: string
+
+                  nsfw:
+                    type: boolean
+                description: random sus image
+  #? Aqui empiezan las rutas de voices
+  /voices/tss:
+    post:
+      summary: Generate a audio file from a text
+      tags:
+        - Texto to Speech
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Tss"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tssVoice:
+                    type: string
+                  nsfw:
+                    type: boolean
+                description: random tss voice
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  error:
+                    type: string
+    #? Aqui empiezan las rutas de voices metodo get
+  /voices/voiceslist:
+    get:
+      summary: Returns all tss voices
+      tags:
+        - Texto to Speech
+      parameters:
+        - in: query
+          name: mode
+          required: true
+          schema:
+            type: string
+          description: The mode of the voice - tts-basic, tss-all, tss-reference
+        - in: query
+          name: language
+
+          schema:
+            type: string
+          description: The language of the voice English, Spanish, Polish, portuguese, dutch
+      required:
+        - mode
+      example:
+        mode: "tts-basic"
+        language: "English"
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              example:
+                [
+                  {
+                    displayName: "Fernanfloo (Latin American Spanish)",
+                    name: "fernanfloo",
+                  },
+                  {
+                    displayName: "dotCSV (Castillian Spanish)",
+                    name: "dotcsv",
+                  },
+                  ...,
+                ]
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              example: { message: "Error bad request", statusCode: 400 }
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              example: { message: "Error internal server", statusCode: 500 }
+  #? Aqui empiezan las rutas de lexica
+  /lexica/search:
+    post:
+      summary: Generate a audio file from a text
+      tags:
+        - IA Images
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Lexica"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              example:
+                images:
+                  [
+                    {
+                      "id": "003ca6ed-df42-436c-aad5-fe68f0b28b0a",
+                      "gallery": "https://lexica.art?q=003ca6ed-df42-436c-aad5-fe68f0b28b0a",
+                      "src": "https://lexica-serve-encoded-images.sharif.workers.dev/md/003ca6ed-df42-436c-aad5-fe68f0b28b0a",
+                      "srcSmall": "https://lexica-serve-encoded-images.sharif.workers.dev/sm/003ca6ed-df42-436c-aad5-fe68f0b28b0a",
+                      "prompt": "my asdibsd 5 6 0 crl pah 6 we 2 3, front camera, camera flash is so bright in his face, viral, selfie, viral on twitter, viral on instagram, viral photo ",
+                      "width": 832,
+                      "height": 512,
+                      "seed": "1538167372",
+                      "grid": false,
+                      "model": "stable-diffusion",
+                      "guidance": 7,
+                      "promptid": "8e2255c6-dc5d-4f9d-b074-89ec5f6765d4",
+                      "nsfw": false,
+                    },
+                  ]
+
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              example:
+                {
+                  message: "Missing required query param or invallid",
+                  statusCode: 400,
+                }
+
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              example: { message: "Error internal server", statusCode: 500 }
+    #? Aqui empiezan las rutas de lexica metodo get con params
+    get:
+      summary: Returns IA images from lexica
+      tags:
+        - IA Images
+      parameters:
+        - in: query
+          name: prompt
+          required: true
+          schema:
+            type: string
+          description: Prompt to search
+        - in: query
+          name: limit
+          required: true
+          schema:
+            type: integer
+          description: limits of results
+        - in: query
+          name: nsfw
+          required: true
+          schema:
+            type: boolean
+          description: allow nsfw images
+        - in: query
+          name: grid
+          required: true
+          schema:
+            type: boolean
+          description: allow grid images
+      required:
+        - prompt
+        - limit
+        - nsfw
+        - grid
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              example:
+                [
+                  {
+                    "id": "021589af-0592-4ed9-bbfc-facfc43465d4",
+                    "gallery": "https://lexica.art?q=021589af-0592-4ed9-bbfc-facfc43465d4",
+                    "src": "https://lexica-serve-encoded-images.sharif.workers.dev/md/021589af-0592-4ed9-bbfc-facfc43465d4",
+                    "srcSmall": "https://lexica-serve-encoded-images.sharif.workers.dev/sm/021589af-0592-4ed9-bbfc-facfc43465d4",
+                    "prompt": "losing your temper by disney concept artists, blunt borders, rule of thirds, golden ratio, godly light, dark! ",
+                    "width": 768,
+                    "height": 1024,
+                    "seed": "3900018758",
+                    "grid": false,
+                    "model": "stable-diffusion",
+                    "guidance": 7,
+                    "promptid": "cc9a6e25-c487-4bfd-9687-47755e6ce9d2",
+                    "nsfw": false,
+                  },
+                ]
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              example:
+                {
+                  message: "Missing required query param or invallid",
+                  statusCode: 400,
+                }
+
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              example: { message: "Error internal server", statusCode: 500 }
+
+#!Esta es la parte de los componentes
+components:
+  schemas:
+    SusImage:
+      type: object
+      properties:
+        image:
+          type: file
+          description: The image to upload
+        nsfw:
+          type: boolean
+          description: If the image is nsfw or not
+      required:
+        - image
+        - nsfw
+      description: Sus image
+      example:
+        susImg: https://i.imgur.com/1JZ9Q2r.jpg
+        nsfw: false
+    #?Este es el schema de TSS
+    Tss:
+      type: object
+      properties:
+        tts:
+          type: string
+          description: The texto to speech
+        voice:
+          type: string
+          description: The voice to use
+      required:
+        - tts
+        - voice
+      description: Tss
+      example:
+        tts: "Hola como has estado, espero que bien"
+        voice: "homero"
+    #?Este es el schema de lexica
+    Lexica:
+      type: object
+      properties:
+        imgUpload:
+          type: file
+          description: upload a image to search
+      required:
+        - imgUpload
+      description: Upload a image to search in search engine of lexica
+      example:
+        images:
+          [
+            {
+              "id": "003ca6ed-df42-436c-aad5-fe68f0b28b0a",
+              "gallery": "https://lexica.art?q=003ca6ed-df42-436c-aad5-fe68f0b28b0a",
+              "src": "https://lexica-serve-encoded-images.sharif.workers.dev/md/003ca6ed-df42-436c-aad5-fe68f0b28b0a",
+              "srcSmall": "https://lexica-serve-encoded-images.sharif.workers.dev/sm/003ca6ed-df42-436c-aad5-fe68f0b28b0a",
+              "prompt": "my asdibsd 5 6 0 crl pah 6 we 2 3, front camera, camera flash is so bright in his face, viral, selfie, viral on twitter, viral on instagram, viral photo ",
+              "width": 832,
+              "height": 512,
+              "seed": "1538167372",
+              "grid": false,
+              "model": "stable-diffusion",
+              "guidance": 7,
+              "promptid": "8e2255c6-dc5d-4f9d-b074-89ec5f6765d4",
+              "nsfw": false,
+            },
+          ]
+
+  #Aqui terminan los componentes y empieza el auth
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

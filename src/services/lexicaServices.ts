@@ -35,7 +35,7 @@ const searchPromptServices = async (
     //   return result
     // }
     colors.enable();
-    console.log(`Resulto de la api: ${result.length}`.green);
+    // console.log(`Resulto de la api: ${result.length}`.green);
     // console.log('hello'.green);
 
     if ([gridQ, nsfwQ].includes(undefined)) {
@@ -57,9 +57,9 @@ const searchPromptServices = async (
       result = result.filter((item) => item.grid !== true);
       // result = result.filter((item) => item.nsfw !== false);q
 
-      console.log(
-        `entre en el NSFW true y GRID false ${result.length}`.magenta
-      );
+      // console.log(
+      //   `entre en el NSFW true y GRID false ${result.length}`.magenta
+      // );
       return result.slice(0, Number(limit));
     }
     if (nsfwQ === false && gridQ === true) {
@@ -67,7 +67,7 @@ const searchPromptServices = async (
       // result = result.filter((item) => item.grid === true);
       // result = result.filter((item) => item.grid !== false);
       // result = result.filter((item) => item.grid === true);
-      console.log(`entre en el NSFW false y GRID true ${result.length}`.yellow);
+      // console.log(`entre en el NSFW false y GRID true ${result.length}`.yellow);
       return result.slice(0, Number(limit));
     }
 
@@ -75,19 +75,19 @@ const searchPromptServices = async (
       // result = result.filter((item) => item.nsfw === true);
       // result = result.filter((item) => item.grid === true);
       // result = result.filter((item) => item.grid !== false);
-      console.log(
-        `entre en el NSFW true y GRID true resultaos ${result.length}`.cyan
-      );
+      // console.log(
+      //   `entre en el NSFW true y GRID true resultaos ${result.length}`.cyan
+      // );
 
       return result.slice(0, Number(limit));
     }
     if (nsfwQ === false && gridQ === false) {
       result = result.filter((item) => item.nsfw !== true);
       result = result.filter((item) => item.grid !== true);
-      console.log(
-        `entre en el NSFW false y GRID false resultaos ${Number(result.length)}`
-          .red
-      );
+      // console.log(
+      //   `entre en el NSFW false y GRID false resultaos ${Number(result.length)}`
+      //     .red
+      // );
       return result.slice(0, Number(limit));
     }
 
@@ -119,7 +119,7 @@ const searchPromptServices = async (
     // }
 
     const finalResult = result.slice(0, Number(limit));
-    console.log(finalResult.length);
+    // console.log(finalResult.length);
 
     // console.log(finalResult.length + " " + limit);
     // console.log("lleggooooo dos");
@@ -143,9 +143,9 @@ const searchImgUplodedServices = async (files: any) => {
         public_id: result.public_id,
       };
     }
-
-    const url = `https://lexica.art/api/v1/search?q=${image?.url}`;
-    console.log(url);
+    
+    const url = `https://lexica.art/api/v1/search?q=${image?.url === undefined ? "" : image?.url}`;
+    // console.log(url);
     const { data } = await axios.get(url);
     // console.log(data);
     const newLexica = new LexicaModel({
@@ -156,7 +156,9 @@ const searchImgUplodedServices = async (files: any) => {
     // console.log(newSave);
     return data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
+    const errorRes = new Error("Missing required query param or invallid");
+    return errorRes;
   }
 };
 
