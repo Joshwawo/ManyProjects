@@ -8,6 +8,7 @@ import swaggerJsDoc from "swagger-jsdoc";
 import helmet from "helmet";
 import compression from "compression";
 import axios, { AxiosResponse } from "axios";
+import colors from 'colors'
 
 import { router } from "./routes";
 import { dbConnect } from "./config/mongo";
@@ -54,7 +55,7 @@ export const swaggerSpec: swaggerJsDoc.Options = {
 const PORT = process.env.PORT || 3000;
 
 export const JTW_SECRET = process.env.JTW_SECRET;
-
+colors.enable()
 const app = express();
 
 //TODO: Activar la whitelist del cors
@@ -112,7 +113,7 @@ const call = async (): Promise<void> => {
     setTimeout(() => call(), timer);
   } catch (error) {
     console.log(error);
-    console.log("uno un error en la fn call");
+    console.log("uno un error en la fn call".red);
   }
 };
 

@@ -16,6 +16,10 @@ const scrappingBooks = async (req: Request, res: Response) => {
   res.json(books);
 };
 
+const rroute = async (req: Request, res: Response) => {
+  res.json({ message: "ruta root, de /scrap" });
+};
+
 const lolSales = async (req: Request, res: Response) => {
   console.log("Scraping sales...");
   const sales = await scraSalesLol();
@@ -47,7 +51,7 @@ const deviantArtPagination = async (req: Request, res: Response) => {
 };
 
 const test = async (req: Request, res: Response) => {
-  res.send("Hello World");
+  res.json({ message: "Si jala la ruta o no pues" });
 };
 
 const testWDomCtrl = async (req: Request, res: Response) => {
@@ -78,4 +82,5 @@ export {
   deviantArtPagination,
   testWDomCtrl,
   liftCtrl,
+  rroute,
 };
