@@ -104,7 +104,7 @@ const call = async (): Promise<void> => {
     const urlProd = "https://api-projects.up.railway.app/scrap/lift";
 
     const timer = 900 * 1000;
-    const { data }: AxiosResponse = await axios.get(url);
+    const { data }: AxiosResponse = await axios.get(urlProd);
     console.log({
       response: data.message,
       time: `Han pasado ${convertMsToMIn(timer)} minutos`,
