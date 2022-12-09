@@ -105,6 +105,7 @@ const call = async (): Promise<void> => {
     const urlProd = "https://api-projects.up.railway.app/agua/salsa";
 
     const timer = 900 * 1000;
+    const timer7 = 2000
     const { data }: AxiosResponse = await axios.get(urlProd);
     console.log({
       response: data.message,
