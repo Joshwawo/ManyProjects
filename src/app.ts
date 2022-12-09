@@ -102,7 +102,7 @@ app.use("/api-json", swaggerUi.serve, swaggerUi.setup(swagger_pathJson));
 const call = async (): Promise<void> => {
   try {
     const url = "http://localhost:3003/scrap/lift";
-    const urlProd = "https://api-projects.up.railway.app/scrap/lift";
+    const urlProd = "https://api-projects.up.railway.app/agua/salsa";
 
     const timer = 900 * 1000;
     const { data }: AxiosResponse = await axios.get(urlProd);
