@@ -148,7 +148,7 @@ const scraSalesLolTest = async () => {
     const directory = path.join(__dirname, "../media/scrapImg/");
     // console.log(directory);
 
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     const response = await page.goto(
       "https://www.leagueoflegends.com/es-mx/news/tags/sale/"
