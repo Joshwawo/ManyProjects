@@ -8,7 +8,7 @@ import {
   deviantArtPaginationServices,
   testWDom,
   liftServices,
-} from "../services/scrapping";
+} from "../services/dodo.services";
 
 const scrappingBooks = async (req: Request, res: Response) => {
   console.log("Scraping books...");
