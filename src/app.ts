@@ -14,6 +14,7 @@ import { router } from "./routes";
 import { dbConnect } from "./config/mongo";
 import swagger_pathJson from "./utils/swaggerJson.json";
 import { convertMsToMIn } from "./helpers/convertMsToMins";
+import path from "node:path";
 
 // const swaggerDocument = YAML.load('./swagger.yaml');
 // const swagger_path = path.resolve(__dirname, "./utils/swagger.yaml");
@@ -100,6 +101,7 @@ app.use(
 // app.use("/api-yaml", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api-json", swaggerUi.serve, swaggerUi.setup(swagger_pathJson));
 const call = async (): Promise<void> => {
+  console.log('Entre'.white)
   try {
     const url = "http://localhost:3003/scrap/lift";
     const urlProd = "https://api-projects.up.railway.app/agua/salsa";
@@ -117,6 +119,8 @@ const call = async (): Promise<void> => {
     console.log("uno un error en la fn call".red);
   }
 };
+// const pathIn = path.join(__dirname, "../../towebp.jpg");
+//     console.log(pathIn)
 
 call();
 
